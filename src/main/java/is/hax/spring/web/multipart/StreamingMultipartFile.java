@@ -37,9 +37,10 @@ public class StreamingMultipartFile implements MultipartFile {
     private long size = -1;
     byte[] bytes;
 
-    public StreamingMultipartFile(FileItemStream item) {
+    public StreamingMultipartFile(FileItemStream item) throws IOException {
 
         this.item = item;
+        getBytes();
 
     }
 
