@@ -5,6 +5,7 @@ package is.hax.spring.cache;
 import javax.cache.Cache;
 import java.util.Collection;
 import java.util.Set;
+import javax.cache.CacheException;
 
 
 /**
@@ -48,7 +49,7 @@ public class CacheHolder <E> {
     }
 
     @SuppressWarnings("unchecked")
-    public Collection<E> getAll(Set<Long> keys) {
+    public Collection<E> getAll(Set<Long> keys) throws CacheException {
         return cache.getAll(keys).values();
     }
 

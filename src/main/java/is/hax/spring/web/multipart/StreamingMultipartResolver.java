@@ -43,6 +43,15 @@ import is.hax.spring.web.multipart.StreamingMultipartFile;
  */
 public class StreamingMultipartResolver implements MultipartResolver {
 
+    private long maxUploadSize = 50000L;
+
+    public long getMaxUploadSize() {
+        return maxUploadSize;
+    }
+
+    public void setMaxUploadSize(long maxUploadSize) {
+        this.maxUploadSize = maxUploadSize;
+    }
 
     public boolean isMultipart(HttpServletRequest request) {
         return ServletFileUpload.isMultipartContent(request);
@@ -52,7 +61,7 @@ public class StreamingMultipartResolver implements MultipartResolver {
 
         // Create a new file upload handler
         ServletFileUpload upload = new ServletFileUpload();
-        upload.setFileSizeMax(50000);
+        upload.setFileSizeMax(maxUploadSize);
 
         String encoding = determineEncoding(request);
 
