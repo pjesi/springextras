@@ -65,8 +65,8 @@ public class StreamingMultipartResolver implements MultipartResolver {
 
         String encoding = determineEncoding(request);
 
-        Map<String, Object> multipartFiles = new HashMap<String, Object>();
-        Map<String, Object> multipartParameters = new HashMap<String, Object>();
+        Map<String, MultipartFile> multipartFiles = new HashMap<String, MultipartFile>();
+        Map<String, String[]> multipartParameters = new HashMap<String, String[]>();
 
         // Parse the request
         try {
