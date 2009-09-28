@@ -20,19 +20,24 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.util.Streams;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
 import org.springframework.util.StringUtils;
+import org.springframework.util.MultiValueMap;
+import org.springframework.util.LinkedMultiValueMap;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 import java.util.HashMap;
 import java.io.InputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 import is.hax.spring.web.multipart.StreamingMultipartFile;
 
@@ -65,14 +70,21 @@ public class StreamingMultipartResolver implements MultipartResolver {
 
         String encoding = determineEncoding(request);
 
-        Map<String, MultipartFile> multipartFiles = new HashMap<String, MultipartFile>();
+        //Map<String, MultipartFile> multipartFiles = new HashMap<String, MultipartFile>();
         Map<String, String[]> multipartParameters = new HashMap<String, String[]>();
+
+
+        MultiValueMap<String, MultipartFile> multipartFiles = new LinkedMultiValueMap<String, MultipartFile>();
+
+
 
         // Parse the request
         try {
             FileItemIterator iter = upload.getItemIterator(request);
             while (iter.hasNext()) {
                 FileItemStream item = iter.next();
+
+
                 String name = item.getFieldName();
                 InputStream stream = item.openStream();
                 if (item.isFormField()) {
@@ -94,11 +106,7 @@ public class StreamingMultipartResolver implements MultipartResolver {
 
                     // Process the input stream
                     MultipartFile file = new StreamingMultipartFile(item);
-
-                    if (multipartFiles.put(name, file) != null) {
-                        throw new MultipartException(
-                                "Multiple files for field name [" + file.getName() + "] found - not supported by MultipartResolver");
-                    }
+                    multipartFiles.add(name, file);
                 }
             }
         } catch (IOException e) {
