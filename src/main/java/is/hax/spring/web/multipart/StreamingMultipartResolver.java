@@ -72,8 +72,9 @@ public class StreamingMultipartResolver implements MultipartResolver {
 
         //Map<String, MultipartFile> multipartFiles = new HashMap<String, MultipartFile>();
         Map<String, String[]> multipartParameters = new HashMap<String, String[]>();
+        Map<String, String> multipartContentTypes = new HashMap<String, String>();
 
-
+        
         MultiValueMap<String, MultipartFile> multipartFiles = new LinkedMultiValueMap<String, MultipartFile>();
 
 
@@ -107,6 +108,7 @@ public class StreamingMultipartResolver implements MultipartResolver {
                     // Process the input stream
                     MultipartFile file = new StreamingMultipartFile(item);
                     multipartFiles.add(name, file);
+                    multipartContentTypes.put(name, file.getContentType());
                 }
             }
         } catch (IOException e) {
@@ -116,7 +118,7 @@ public class StreamingMultipartResolver implements MultipartResolver {
         }
 
 
-        return new DefaultMultipartHttpServletRequest(request, multipartFiles, multipartParameters);
+        return new DefaultMultipartHttpServletRequest(request, multipartFiles, multipartParameters, multipartContentTypes);
     }
 
     public void cleanupMultipart(MultipartHttpServletRequest request) {
