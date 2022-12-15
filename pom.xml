@@ -9,7 +9,7 @@
     <name>springextras</name>
     <url>http://github.com/pjesi/springextras</url>
     <properties>
-        <spring.version>3.0.0.RC1</spring.version>
+        <spring.version>5.2.20.RELEASE</spring.version>
     </properties>
 
     <repositories>
